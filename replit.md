@@ -10,17 +10,37 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes (September 30, 2025)
 
+**React Native Mobile App**
+- Created separate mobile app in `mobile/` directory using Expo and React Native
+- Implemented complete mobile UI with 4 main screens matching user mockups:
+  - Dashboard: Risk score circle, category badge, personalized health suggestions
+  - Input: Health metrics form with emoji mood selector (5 emojis)
+  - Trends: 7-day risk visualization chart
+  - Settings: AI chat interface with Gemini, demo features, logout
+- Built bottom tab navigation for easy mobile navigation
+- Integrated Firebase Authentication for email/password auth
+- Connected to existing Express backend API endpoints
+- Mobile app ready for testing (requires `npm install` in mobile/ directory)
+
+**Gemini AI Integration**
+- Added Google Gemini AI as adaptive health companion
+- Chat endpoint with conversation history stored in PostgreSQL
+- AI provides personalized health advice based on user's health metrics
+- Context-aware conversations with user health data integration
+
 **Authentication Migration**
 - Switched from Supabase to Firebase Authentication for simpler setup and portability
 - Implemented email/password authentication (no third-party OAuth)
 - Firebase UID used as primary user identifier in database
-- Authentication state managed through React Context API
+- Authentication state managed through React Context API (web) and navigation (mobile)
 
 **Environment Variables Required**
-- `DATABASE_URL` - Supabase PostgreSQL connection string
+- `DATABASE_URL` - PostgreSQL connection string
 - `VITE_FIREBASE_API_KEY` - Firebase API key
 - `VITE_FIREBASE_PROJECT_ID` - Firebase project ID
 - `VITE_FIREBASE_APP_ID` - Firebase app ID
+- `GEMINI_API_KEY` - Google Gemini API key for AI chat
+- `SESSION_SECRET` - Express session secret
 
 **Current MVP Status**
 - ✅ User authentication (signup, login, logout) with Firebase
@@ -30,7 +50,9 @@ Preferred communication style: Simple, everyday language.
 - ✅ Personalized health suggestions
 - ✅ 7-day trend visualization
 - ✅ Database persistence with PostgreSQL
-- ✅ End-to-end testing complete
+- ✅ Gemini AI health companion with chat interface
+- ✅ React Native mobile app with bottom navigation
+- ✅ Complete mobile UI matching mockups
 
 ## System Architecture
 
