@@ -1,0 +1,40 @@
+name: ms_companion
+description: MS Companion - AI-powered health tracking for Multiple Sclerosis patients
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Firebase
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  
+  # HTTP & API
+  http: ^1.2.2
+  
+  # State Management
+  provider: ^6.1.2
+  
+  # UI
+  flutter_svg: ^2.0.10
+  google_fonts: ^6.2.1
+  fl_chart: ^0.69.0
+  
+  # Storage
+  shared_preferences: ^2.3.2
+  
+  # Utils
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
