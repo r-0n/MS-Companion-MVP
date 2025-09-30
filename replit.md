@@ -8,6 +8,30 @@ MS Companion is a health monitoring application designed for Multiple Sclerosis 
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (September 30, 2025)
+
+**Authentication Migration**
+- Switched from Supabase to Firebase Authentication for simpler setup and portability
+- Implemented email/password authentication (no third-party OAuth)
+- Firebase UID used as primary user identifier in database
+- Authentication state managed through React Context API
+
+**Environment Variables Required**
+- `DATABASE_URL` - Supabase PostgreSQL connection string
+- `VITE_FIREBASE_API_KEY` - Firebase API key
+- `VITE_FIREBASE_PROJECT_ID` - Firebase project ID
+- `VITE_FIREBASE_APP_ID` - Firebase app ID
+
+**Current MVP Status**
+- ✅ User authentication (signup, login, logout) with Firebase
+- ✅ Health metrics input interface (5 parameters)
+- ✅ ML-based risk prediction using Random Forest
+- ✅ Risk assessment display with color-coded categories
+- ✅ Personalized health suggestions
+- ✅ 7-day trend visualization
+- ✅ Database persistence with PostgreSQL
+- ✅ End-to-end testing complete
+
 ## System Architecture
 
 ### Frontend Architecture
