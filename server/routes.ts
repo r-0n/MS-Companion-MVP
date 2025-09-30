@@ -149,6 +149,86 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Chat endpoints
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { generateAIResponse } = await import('./gemini-service.js');
+      const { insertChatMessageSchema } = await import('@shared/schema');
+      
+      const { userId, message } = req.body;
+      
+      if (!userId) {
+        return res.status(400).json({ error: "userId is required" });
+      }
+
+      const validatedMessage = insertChatMessageSchema.parse({
+        role: "user",
+        content: message,
+      });
+
+      const chatHistory = await storage.getUserChatHistory(userId, 10);
+      const latestMetrics = await storage.getLatestHealthMetrics(userId);
+      const latestRisk = await storage.getLatestRiskAssessment(userId);
+
+      const context = {
+        recentMetrics: latestMetrics ? {
+          sleepQuality: latestMetrics.sleepQuality,
+          sleepDuration: latestMetrics.sleepDuration,
+          fatigueLevel: latestMetrics.fatigueLevel,
+          moodScore: latestMetrics.moodScore,
+          activitySteps: latestMetrics.activitySteps,
+          riskScore: latestRisk?.riskScore,
+          riskCategory: latestRisk?.riskCategory,
+        } : undefined,
+        conversationHistory: chatHistory
+          .reverse()
+          .map(msg => ({
+            role: msg.role as "user" | "assistant",
+            content: msg.content,
+          })),
+      };
+
+      const aiResponse = await generateAIResponse(validatedMessage.content, context);
+
+      const userMessage = await storage.createChatMessage({
+        userId,
+        ...validatedMessage,
+      });
+
+      const assistantMessage = await storage.createChatMessage({
+        userId,
+        role: "assistant",
+        content: aiResponse,
+      });
+
+      res.json({
+        userMessage,
+        assistantMessage,
+      });
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: "Invalid message format", details: error.errors });
+      }
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/chat/history/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { limit } = req.query;
+      
+      const history = await storage.getUserChatHistory(
+        userId,
+        limit ? parseInt(limit as string) : undefined
+      );
+      
+      res.json({ history: history.reverse() });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

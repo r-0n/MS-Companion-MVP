@@ -32,6 +32,14 @@ export const riskAssessments = pgTable("risk_assessments", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const chatMessages = pgTable("chat_messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  role: text("role").notNull(), // "user" or "assistant"
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   id: true,
   email: true,
@@ -59,12 +67,22 @@ export const insertRiskAssessmentSchema = createInsertSchema(riskAssessments).pi
   mlModelVersion: true,
 });
 
+export const insertChatMessageSchema = createInsertSchema(chatMessages).pick({
+  role: true,
+  content: true,
+}).extend({
+  role: z.enum(["user", "assistant"]),
+  content: z.string().min(1).max(5000),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertHealthMetrics = z.infer<typeof insertHealthMetricsSchema>;
 export type HealthMetrics = typeof healthMetrics.$inferSelect;
 export type InsertRiskAssessment = z.infer<typeof insertRiskAssessmentSchema>;
 export type RiskAssessment = typeof riskAssessments.$inferSelect;
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+export type ChatMessage = typeof chatMessages.$inferSelect;
 
 export type HealthMetricsWithRisk = HealthMetrics & {
   riskAssessment?: RiskAssessment;

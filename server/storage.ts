@@ -4,12 +4,15 @@ import {
   users, 
   healthMetrics, 
   riskAssessments,
+  chatMessages,
   type User, 
   type InsertUser,
   type HealthMetrics,
   type InsertHealthMetrics,
   type RiskAssessment,
   type InsertRiskAssessment,
+  type ChatMessage,
+  type InsertChatMessage,
   type HealthMetricsWithRisk
 } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
@@ -37,6 +40,10 @@ export interface IStorage {
   createRiskAssessment(assessment: InsertRiskAssessment & { userId: string; healthMetricId: string }): Promise<RiskAssessment>;
   getUserRiskHistory(userId: string, limit?: number): Promise<HealthMetricsWithRisk[]>;
   getLatestRiskAssessment(userId: string): Promise<RiskAssessment | undefined>;
+  
+  // Chat methods
+  createChatMessage(message: InsertChatMessage & { userId: string }): Promise<ChatMessage>;
+  getUserChatHistory(userId: string, limit?: number): Promise<ChatMessage[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -110,6 +117,20 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(riskAssessments.createdAt))
       .limit(1);
     return result[0];
+  }
+
+  async createChatMessage(message: InsertChatMessage & { userId: string }): Promise<ChatMessage> {
+    const result = await db.insert(chatMessages).values(message).returning();
+    return result[0];
+  }
+
+  async getUserChatHistory(userId: string, limit = 50): Promise<ChatMessage[]> {
+    return await db
+      .select()
+      .from(chatMessages)
+      .where(eq(chatMessages.userId, userId))
+      .orderBy(desc(chatMessages.createdAt))
+      .limit(limit);
   }
 }
 
