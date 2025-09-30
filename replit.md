@@ -10,17 +10,18 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes (September 30, 2025)
 
-**React Native Mobile App**
-- Created separate mobile app in `mobile/` directory using Expo and React Native
+**Flutter Mobile App**
+- Created separate mobile app in `flutter/` directory using Flutter/Dart
 - Implemented complete mobile UI with 4 main screens matching user mockups:
-  - Dashboard: Risk score circle, category badge, personalized health suggestions
-  - Input: Health metrics form with emoji mood selector (5 emojis)
-  - Trends: 7-day risk visualization chart
-  - Settings: AI chat interface with Gemini, demo features, logout
-- Built bottom tab navigation for easy mobile navigation
-- Integrated Firebase Authentication for email/password auth
+  - Dashboard: Risk score circle with pull-to-refresh, category badge, personalized health suggestions
+  - Input: Health metrics form with 5-emoji mood selector (😢😕😐😊😄)
+  - Trends: 7-day risk visualization with fl_chart line graph
+  - Settings: AI chat interface with Gemini, bubble messages, logout
+- Built bottom navigation bar for easy mobile navigation
+- Integrated Firebase Authentication with Provider state management
 - Connected to existing Express backend API endpoints
-- Mobile app ready for testing (requires `npm install` in mobile/ directory)
+- Material Design 3 with blue theme (#4A90E2) matching mockups
+- Mobile app ready for local development (requires Flutter SDK and Firebase setup)
 
 **Gemini AI Integration**
 - Added Google Gemini AI as adaptive health companion
@@ -48,11 +49,12 @@ Preferred communication style: Simple, everyday language.
 - ✅ ML-based risk prediction using Random Forest
 - ✅ Risk assessment display with color-coded categories
 - ✅ Personalized health suggestions
-- ✅ 7-day trend visualization
+- ✅ 7-day trend visualization with interactive charts
 - ✅ Database persistence with PostgreSQL
 - ✅ Gemini AI health companion with chat interface
-- ✅ React Native mobile app with bottom navigation
+- ✅ Flutter mobile app with bottom navigation
 - ✅ Complete mobile UI matching mockups
+- ✅ Portable local development setup
 
 ## System Architecture
 
