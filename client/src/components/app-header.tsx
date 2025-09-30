@@ -19,7 +19,7 @@ export default function AppHeader() {
           <div>
             <h1 className="text-xl font-semibold text-foreground">MS Companion</h1>
             <p className="text-sm text-muted-foreground">
-              Welcome back, {user?.user_metadata?.name || user?.email || 'User'}
+              Welcome back, {user?.displayName || user?.email || 'User'}
             </p>
           </div>
         </div>

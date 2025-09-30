@@ -30,7 +30,7 @@ export default function HealthMetricsInput() {
   const predictRiskMutation = useMutation({
     mutationFn: async (metrics: any) => {
       const response = await apiRequest('POST', '/api/predict-risk', {
-        userId: user?.id,
+        userId: user?.uid,
         ...metrics,
       });
       return response.json();

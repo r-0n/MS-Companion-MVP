@@ -13,9 +13,9 @@ interface RiskAssessment {
 export default function RiskStatusCard() {
   const { user } = useAuth();
 
-  const { data: riskData, isLoading } = useQuery({
-    queryKey: ['/api/latest-risk', user?.id],
-    enabled: !!user?.id,
+  const { data: riskData, isLoading } = useQuery<{ riskAssessment: RiskAssessment }>({
+    queryKey: ['/api/latest-risk', user?.uid],
+    enabled: !!user?.uid,
   });
 
   if (isLoading) {
@@ -26,7 +26,7 @@ export default function RiskStatusCard() {
     );
   }
 
-  const riskAssessment = riskData?.riskAssessment as RiskAssessment | undefined;
+  const riskAssessment = riskData?.riskAssessment;
   const riskScore = riskAssessment?.riskScore ?? 0;
   const riskCategory = riskAssessment?.riskCategory ?? 'Unknown';
   const suggestion = riskAssessment?.suggestion ?? 'Complete your first health assessment to get personalized recommendations.';

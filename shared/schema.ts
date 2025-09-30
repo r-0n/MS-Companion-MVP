@@ -4,7 +4,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar("id").primaryKey(), // Firebase UID
   email: text("email").notNull().unique(),
   name: text("name").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -33,6 +33,7 @@ export const riskAssessments = pgTable("risk_assessments", {
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
+  id: true,
   email: true,
   name: true,
 });

@@ -19,8 +19,8 @@ export default function TrendChart() {
   const { user } = useAuth();
 
   const { data, isLoading } = useQuery({
-    queryKey: ['/api/risk-history', user?.id],
-    enabled: !!user?.id,
+    queryKey: ['/api/risk-history', user?.uid],
+    enabled: !!user?.uid,
   });
 
   if (isLoading) {
