@@ -7,6 +7,7 @@ import { AuthProvider } from "@/lib/auth";
 import AuthPage from "@/pages/auth";
 import DashboardPage from "@/pages/dashboard";
 import NotFound from "@/pages/not-found";
+import InstallPrompt from "@/components/install-prompt";
 
 function Router() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <AuthProvider>
         <TooltipProvider>
           <Toaster />
+          <InstallPrompt />
           <Router />
         </TooltipProvider>
       </AuthProvider>

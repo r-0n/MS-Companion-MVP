@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { useLocation } from 'wouter';
 import AppHeader from '@/components/app-header';
@@ -12,9 +13,13 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
 
-  // Redirect if not authenticated
+  useEffect(() => {
+    if (!user) {
+      setLocation('/');
+    }
+  }, [user, setLocation]);
+
   if (!user) {
-    setLocation('/');
     return null;
   }
 

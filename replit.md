@@ -8,9 +8,23 @@ MS Companion is a health monitoring application designed for Multiple Sclerosis 
 
 Preferred communication style: Simple, everyday language.
 
-## Recent Changes (September 30, 2025)
+## Recent Changes
 
-**Flutter Mobile App**
+**October 1, 2025 - Progressive Web App (PWA) Implementation**
+- Converted web application to a full Progressive Web App for mobile installation
+- Added PWA manifest.json with app metadata and icons
+- Implemented service worker for offline functionality and secure caching:
+  - Excludes all /api routes and authenticated requests from cache
+  - Only caches GET requests for static assets
+  - Network-first strategy for API calls to prevent stale health data
+  - Offline fallback for better user experience
+- Created install prompt component for guided PWA installation
+- Added comprehensive PWA meta tags for mobile optimization and SEO
+- Icons available in SVG format (Android/modern browsers fully supported)
+- Service worker registered on app load for automatic updates
+- PWA can be installed on mobile devices and works like a native app
+
+**September 30, 2025 - Flutter Mobile App**
 - Created separate mobile app in `flutter/` directory using Flutter/Dart
 - Implemented complete mobile UI with 4 main screens matching user mockups:
   - Dashboard: Risk score circle with pull-to-refresh, category badge, personalized health suggestions
@@ -54,6 +68,8 @@ Preferred communication style: Simple, everyday language.
 - ✅ Gemini AI health companion with chat interface
 - ✅ Flutter mobile app with bottom navigation
 - ✅ Complete mobile UI matching mockups
+- ✅ Progressive Web App (PWA) with offline support
+- ✅ Mobile-installable web app with service worker
 - ✅ Portable local development setup
 
 ## System Architecture
