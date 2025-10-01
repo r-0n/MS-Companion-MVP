@@ -24,7 +24,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-20">
       <AppHeader />
       
       <main className="max-w-7xl mx-auto p-4 space-y-8">

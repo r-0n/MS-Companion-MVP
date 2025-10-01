@@ -6,16 +6,27 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/lib/auth";
 import AuthPage from "@/pages/auth";
 import DashboardPage from "@/pages/dashboard";
+import ChatPage from "@/pages/chat";
+import HistoryPage from "@/pages/history";
 import NotFound from "@/pages/not-found";
 import InstallPrompt from "@/components/install-prompt";
+import BottomNav from "@/components/bottom-nav";
+import { useAuth } from "@/hooks/use-auth";
 
 function Router() {
+  const { user } = useAuth();
+  
   return (
-    <Switch>
-      <Route path="/" component={AuthPage} />
-      <Route path="/dashboard" component={DashboardPage} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Switch>
+        <Route path="/" component={AuthPage} />
+        <Route path="/dashboard" component={DashboardPage} />
+        <Route path="/chat" component={ChatPage} />
+        <Route path="/history" component={HistoryPage} />
+        <Route component={NotFound} />
+      </Switch>
+      {user && <BottomNav />}
+    </>
   );
 }
 
