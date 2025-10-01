@@ -1,17 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { useLocation } from 'wouter';
 import AppHeader from '@/components/app-header';
 import RiskStatusCard from '@/components/risk-status-card';
 import HealthMetricsInput from '@/components/health-metrics-input';
 import TrendChart from '@/components/trend-chart';
+import VoiceJournal from '@/components/voice-journal';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Mic, Zap, Phone } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
+  const [voiceJournalOpen, setVoiceJournalOpen] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!user) {
@@ -48,6 +52,7 @@ export default function DashboardPage() {
               <Button 
                 variant="secondary" 
                 className="w-full py-3 text-base"
+                onClick={() => setVoiceJournalOpen(true)}
                 data-testid="button-voice-journal"
               >
                 Start Recording
@@ -88,6 +93,12 @@ export default function DashboardPage() {
                 <Button 
                   variant="ghost" 
                   className="w-full justify-start bg-accent hover:bg-accent/80 p-3 h-auto"
+                  onClick={() => {
+                    toast({
+                      title: 'Contact Dr. Smith',
+                      description: 'Opening contact options for your neurologist...',
+                    });
+                  }}
                   data-testid="button-contact-doctor"
                 >
                   <div className="text-left">
@@ -98,6 +109,12 @@ export default function DashboardPage() {
                 <Button 
                   variant="ghost" 
                   className="w-full justify-start bg-accent hover:bg-accent/80 p-3 h-auto"
+                  onClick={() => {
+                    toast({
+                      title: 'MS Helpline',
+                      description: '24/7 Support: 1-800-FIGHT-MS',
+                    });
+                  }}
                   data-testid="button-contact-helpline"
                 >
                   <div className="text-left">
@@ -110,6 +127,8 @@ export default function DashboardPage() {
           </Card>
         </div>
       </main>
+      
+      <VoiceJournal open={voiceJournalOpen} onOpenChange={setVoiceJournalOpen} />
     </div>
   );
 }

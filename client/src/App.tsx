@@ -15,7 +15,7 @@ import { useAuth } from "@/hooks/use-auth";
 
 function Router() {
   const { user } = useAuth();
-  
+
   return (
     <>
       <Switch>

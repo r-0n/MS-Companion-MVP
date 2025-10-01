@@ -229,6 +229,98 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Generate dummy data endpoint
+  app.post("/api/generate-dummy-data/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      
+      const dummyData = [
+        {
+          sleepQuality: 7,
+          sleepDuration: 8,
+          fatigueLevel: 4,
+          moodScore: 7,
+          activitySteps: 6500,
+          riskScore: 15,
+          riskCategory: 'Low',
+          suggestion: 'Great job maintaining consistent sleep patterns! Keep up your regular activity level.',
+        },
+        {
+          sleepQuality: 5,
+          sleepDuration: 6,
+          fatigueLevel: 7,
+          moodScore: 5,
+          activitySteps: 3200,
+          riskScore: 45,
+          riskCategory: 'Moderate',
+          suggestion: 'Your fatigue levels are elevated. Consider taking more breaks and prioritizing rest.',
+        },
+        {
+          sleepQuality: 8,
+          sleepDuration: 7.5,
+          fatigueLevel: 3,
+          moodScore: 8,
+          activitySteps: 8000,
+          riskScore: 12,
+          riskCategory: 'Low',
+          suggestion: 'Excellent health indicators! Your activity and rest are well balanced.',
+        },
+        {
+          sleepQuality: 6,
+          sleepDuration: 7,
+          fatigueLevel: 6,
+          moodScore: 6,
+          activitySteps: 5000,
+          riskScore: 32,
+          riskCategory: 'Moderate',
+          suggestion: 'Moderate fatigue detected. Try to maintain consistent sleep schedule and stay hydrated.',
+        },
+        {
+          sleepQuality: 4,
+          sleepDuration: 5,
+          fatigueLevel: 8,
+          moodScore: 4,
+          activitySteps: 2000,
+          riskScore: 68,
+          riskCategory: 'High',
+          suggestion: 'High risk indicators detected. Please prioritize rest and consider consulting your healthcare provider.',
+        },
+      ];
+
+      const results = [];
+      
+      for (const data of dummyData) {
+        const healthMetric = await storage.createHealthMetrics({
+          userId,
+          sleepQuality: data.sleepQuality,
+          sleepDuration: data.sleepDuration,
+          fatigueLevel: data.fatigueLevel,
+          moodScore: data.moodScore,
+          activitySteps: data.activitySteps,
+        });
+
+        const riskAssessment = await storage.createRiskAssessment({
+          userId,
+          healthMetricId: healthMetric.id,
+          riskScore: data.riskScore,
+          riskCategory: data.riskCategory,
+          suggestion: data.suggestion,
+          mlModelVersion: 'dummy-v1',
+        });
+
+        results.push({ healthMetric, riskAssessment });
+      }
+
+      res.json({ 
+        message: 'Dummy data created successfully',
+        count: results.length,
+        data: results 
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

@@ -29,6 +29,14 @@ export default function ChatPage() {
     }
   }, [user, setLocation]);
 
+  useEffect(() => {
+    const voiceMessage = localStorage.getItem('voiceMessage');
+    if (voiceMessage) {
+      setMessage(voiceMessage);
+      localStorage.removeItem('voiceMessage');
+    }
+  }, []);
+
   const { data: chatData } = useQuery<{ history: ChatMessage[] }>({
     queryKey: [`/api/chat/history/${user?.uid}`],
     enabled: !!user,
@@ -64,7 +72,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-background">
+    <div className="h-screen flex flex-col bg-background pb-16">
       {/* Header */}
       <div className="bg-card border-b border-border p-4">
         <div className="max-w-4xl mx-auto">

@@ -1,7 +1,9 @@
-const CACHE_NAME = 'ms-companion-v1';
+const CACHE_NAME = 'ms-companion-v2';
 const urlsToCache = [
   '/',
   '/dashboard',
+  '/chat',
+  '/history',
   '/index.html',
   '/manifest.json'
 ];

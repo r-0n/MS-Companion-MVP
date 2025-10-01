@@ -1,12 +1,15 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { useLocation } from 'wouter';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { queryClient, apiRequest } from '@/lib/queryClient';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp, TrendingDown, Minus, Calendar, Activity } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { TrendingUp, TrendingDown, Minus, Calendar, Activity, Plus } from 'lucide-react';
 import { format } from 'date-fns';
+import { useToast } from '@/hooks/use-toast';
 
 type HealthMetric = {
   id: number;
@@ -32,6 +35,7 @@ type RiskAssessment = {
 export default function HistoryPage() {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!user) {
@@ -47,6 +51,27 @@ export default function HistoryPage() {
   const { data: riskData } = useQuery<{ history: RiskAssessment[] }>({
     queryKey: [`/api/risk-history/${user?.uid}`],
     enabled: !!user,
+  });
+
+  const generateDummyDataMutation = useMutation({
+    mutationFn: async () => {
+      return apiRequest('POST', `/api/generate-dummy-data/${user?.uid}`, {});
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/health-metrics/${user?.uid}`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/risk-history/${user?.uid}`] });
+      toast({
+        title: 'Sample Data Added',
+        description: '5 sample health records have been added to your history.',
+      });
+    },
+    onError: () => {
+      toast({
+        title: 'Error',
+        description: 'Failed to generate sample data. Please try again.',
+        variant: 'destructive',
+      });
+    },
   });
 
   if (!user) {
@@ -73,13 +98,27 @@ export default function HistoryPage() {
       {/* Header */}
       <div className="bg-card border-b border-border p-4">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-xl font-semibold text-foreground flex items-center gap-2">
-            <Activity className="h-6 w-6 text-primary" />
-            Health History
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Track your health metrics and risk assessments over time
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                <Activity className="h-6 w-6 text-primary" />
+                Health History
+              </h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                Track your health metrics and risk assessments over time
+              </p>
+            </div>
+            <Button
+              onClick={() => generateDummyDataMutation.mutate()}
+              disabled={generateDummyDataMutation.isPending}
+              variant="outline"
+              size="sm"
+              data-testid="button-generate-dummy-data"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Sample Data
+            </Button>
+          </div>
         </div>
       </div>
 
