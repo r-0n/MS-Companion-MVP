@@ -185,4 +185,126 @@ Preferred communication style: Simple, everyday language.
 - Firebase configuration via Vite environment variables
 - Node.js development/production mode switching
 
+## Setting Up
+
+Follow these steps to get the MS Companion app running locally:
+
+### 1. Clone the Repository
+
+```sh
+git clone https://github.com/r-0n/MS-Companion-MVP.git
+cd MS-Companion-MVP
+```
+
+### 2. Install Dependencies
+
+Install dependencies for both the server and client:
+
+```sh
+# Install server dependencies
+npm install
+
+
+# (Optional) Install Flutter dependencies for mobile app
+cd ../flutter
+flutter pub get
+```
+### 3. Set Up Firebase Authentication
+Go to [Firebase Console](https://firebase.google.com/)
+Create a new project (or use existing one)
+Enable Authentication → Email/Password sign-in method
+Go to Project Settings and Get your:
+API Key
+Project ID
+App ID
+
+### 4. Set Up Google Gemini AI (Free)
+Go to Google AI Studio
+Click "Get API key"
+Copy your free Gemini API key
+
+### 5. Set Up PostgreSQL Database
+Option A: Cloud Database (Easiest) (What I'm using)
+
+Go to [Neon.tech](https://neon.tech/) and sign up (free)
+Create a new database
+Copy the connection string (looks like: postgresql://user:pass@host/dbname)
+
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in the project root  with the following variables:
+
+```
+# Database
+DATABASE_URL=postgresql://your-connection-string-here
+
+# Firebase (from step 3)
+VITE_FIREBASE_API_KEY=your-firebase-api-key
+VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+VITE_FIREBASE_APP_ID=your-firebase-app-id
+
+# Google Gemini AI (from step 4)
+GEMINI_API_KEY=your-gemini-api-key
+
+# Session Secret (generate any random string)
+SESSION_SECRET=your-random-secret-key-here
+```
+
+> **Note:** Never commit your `.env` files to version control.
+
+### Set Up Database Schema
+npm run db:push
+
+
+### 5. Start the development Server
+
+From the project root:
+
+```sh
+npm run dev
+```
+
+This starts the Express API server with hot-reloading.
+
+### 6. Start the Frontend (Web App)
+
+In a new terminal, from the `client` directory:
+
+```sh
+cd client
+npm run dev
+```
+
+This starts the Vite development server for the React frontend.
+
+### 7. (Optional) Start the Flutter Mobile App
+
+If you want to run the mobile app:
+
+```sh
+cd flutter
+flutter run
+```
+
+### 8. Access the App
+
+- Web app: [http://localhost:5000]
+- Mobile app: Run on your emulator or device
+
+---
+
+**Troubleshooting:**  
+- Ensure all environment variables are set.
+- Check database connectivity.
+- For ML features, ensure Python 3 and required packages are installed.
+
+
+
+
+
+
+
+
+
   
