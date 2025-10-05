@@ -44,7 +44,7 @@ Preferred communication style: Simple, everyday language.
 - Context-aware conversations with user health data integration
 
 **Authentication Migration**
-- Switched from Supabase to Firebase Authentication for simpler setup and portability
+- Setup Firebase Authentication for simpler setup and portability
 - Implemented email/password authentication (no third-party OAuth)
 - Firebase UID used as primary user identifier in database
 - Authentication state managed through React Context API (web) and navigation (mobile)
